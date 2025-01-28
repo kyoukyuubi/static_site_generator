@@ -1,10 +1,14 @@
 from textnode import *
+from htmlnode import *
 
 def main():
-    textnode = TextNode("this is a test string", TextType.TEXT, "https://www.boot.dev")
-    othernode = TextNode("Another text node", TextType.TEXT)
-    print(textnode == othernode)
-    print(textnode)
-
+    props = {
+        "href": "https://www.google.com",
+        "target": "_blank",
+    }
+    htmlnode = HTMLNode("tag text", "Value text", None, props)
+    to_html = htmlnode.props_to_html()
+    print(htmlnode)
+    print(f"String:{to_html}")
 
 main()

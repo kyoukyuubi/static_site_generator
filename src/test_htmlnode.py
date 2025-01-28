@@ -82,5 +82,53 @@ class TestTextNode(unittest.TestCase):
         expected = "this is a string"
         self.assertEqual(node.to_html(), expected)
 
+    #Testing ParentNode
+    def test_parent_node(self):
+        node = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        excepted = "ParentNode(p, children: [LeafNode(b, Bold text, None), LeafNode(None, Normal text, None), LeafNode(i, italic text, None), LeafNode(None, Normal text, None)], None)" 
+        self.assertEqual(repr(node), excepted)
+
+    def test_to_html(self):
+        node = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        excepted = "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>" 
+        self.assertEqual(node.to_html(), excepted)
+
+    def test_to_html_none_tag(self):
+        node = ParentNode(
+            "",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        with self.assertRaises(ValueError):
+            node.to_html()
+
+    def test_to_html_none_children(self):
+        node = ParentNode(
+            "p",
+            [],
+        )
+        with self.assertRaises(ValueError):
+            node.to_html()
+
 if __name__ == "__main__":
     unittest.main()

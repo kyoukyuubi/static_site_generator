@@ -2,7 +2,17 @@ from textnode import *
 from htmlnode import *
 
 def main():
-    string1 = LeafNode("", "This is a paragraph of text.")
-    print(string1)
+    node = ParentNode(
+        "p",
+        [
+            LeafNode("b", "Bold text"),
+            LeafNode(None, "Normal text"),
+            LeafNode("i", "italic text"),
+            LeafNode(None, "Normal text"),
+        ],
+    )
+
+    print(node.to_html())
+    print(f"Node: {node}")
 
 main()

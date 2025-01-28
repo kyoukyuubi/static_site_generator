@@ -2,6 +2,7 @@ import unittest
 from htmlnode import *
 
 class TestTextNode(unittest.TestCase):
+    #Testing HTMLNode
     def test_html_node(self):
         props = {
             "href": "https://www.google.com",
@@ -54,6 +55,32 @@ class TestTextNode(unittest.TestCase):
         htmlnode = HTMLNode("tag text", "Value text")
         with self.assertRaises(NotImplementedError):
             htmlnode.to_html()
+
+    #Testing LeafNode
+    def test_leaf_node(self):
+        node = LeafNode("p", "This is a paragraph of text.")
+        expected = "LeafNode(p, This is a paragraph of text., None)"
+        self.assertEqual(repr(node), expected)
+
+    def test_to_html_with_props(self):
+        node = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
+        expected = '<a href="https://www.google.com">Click me!</a>'
+        self.assertEqual(node.to_html(), expected)
+
+    def test_to_html_without_props(self):
+        node = LeafNode("p", "This is a paragraph of text.")
+        expected = "<p>This is a paragraph of text.</p>"
+        self.assertEqual(node.to_html(), expected)
+
+    def test_to_html_value_none(self):
+        node = LeafNode("p", "")
+        with self.assertRaises(ValueError):
+            node.to_html()
+
+    def test_to_html_tag_none(self):
+        node = LeafNode("", "this is a string")
+        expected = "this is a string"
+        self.assertEqual(node.to_html(), expected)
 
 if __name__ == "__main__":
     unittest.main()

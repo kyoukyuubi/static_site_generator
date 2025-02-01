@@ -19,6 +19,13 @@ class HTMLNode():
             html_string += f' {key}="{value}"'
         return html_string
     
+    def __eq__(self, other):
+        return (isinstance(other, self.__class__) and
+                self.tag == other.tag and
+                self.children == other.children and
+                self.value == other.value and
+                self.props == other.props)
+
     def __repr__(self):
         #Return the values of the class as a string for debugging purposes
         return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"

@@ -25,7 +25,6 @@ def block_to_block_type(text):
         case ">":
             #Split text into lines using \n
             lines = text.split("\n")
-            print(f"Full text: {repr(text)}")
             #If all lines start with > return quote
             if all(line.startswith(">") for line in lines):
                 return "quote"

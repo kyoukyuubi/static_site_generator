@@ -59,3 +59,70 @@ def hello_world():
             ])
         ])
         self.assertEqual(markdown_to_html_node(markdown), expected)
+
+    def test_extract_title(self):
+        markdown1 = """# Header one
+
+This is a paragraph with some *italic* and **bold** text.
+
+* List item 1
+* List item 2
+* List item 3
+
+1. Ordered item 1
+2. Ordered item 2
+3. Ordered item 3
+
+> This is a block quote
+> with multiple lines
+
+```python
+def hello_world():
+    print("Hello World!")
+```
+"""
+
+        markdown2 = """This is a paragraph with some *italic* and **bold** text.
+
+* List item 1
+* List item 2
+* List item 3
+
+1. Ordered item 1
+2. Ordered item 2
+3. Ordered item 3
+
+# Header one
+
+> This is a block quote
+> with multiple lines
+
+```python
+def hello_world():
+    print("Hello World!")
+```
+"""
+
+        markdown_error = """This is a paragraph with some *italic* and **bold** text.
+
+* List item 1
+* List item 2
+* List item 3
+
+1. Ordered item 1
+2. Ordered item 2
+3. Ordered item 3
+
+> This is a block quote
+> with multiple lines
+
+```python
+def hello_world():
+    print("Hello World!")
+```
+"""
+
+        self.assertEqual(extract_title(markdown1), "Header one")
+        self.assertEqual(extract_title(markdown2), "Header one")
+        with self.assertRaises(Exception):
+            extract_title(markdown_error)

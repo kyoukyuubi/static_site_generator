@@ -71,3 +71,16 @@ def markdown_to_html_node(markdown):
                 result_node.children.append(ol_node)
     
     return result_node
+
+def extract_title(markdown):
+    #Split the markdown text into lines
+    lines = markdown.split("\n")
+
+    for line in lines:
+        #Check if line starts with # and only 1 #
+        if line.startswith("#") and not line.startswith("##"):
+            #return the title without the #
+            return line.lstrip("#").strip()
+            
+    #Raise an exception, cause no h1 was found
+    raise Exception("No Title markdown was found!")

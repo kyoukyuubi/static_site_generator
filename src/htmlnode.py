@@ -37,10 +37,10 @@ class LeafNode(HTMLNode):
 
     def to_html(self):
         #Check if value is None or "" and raise a ValueError if so
-        if self.value == None or self.value == "":
+        if self.value is None:
             raise ValueError("All leaf nodes must have a value")
         #Check if tag is None or "", return value if so
-        if self.tag == None or self.tag == "":
+        if self.tag is None:
             return f"{self.value}"
         #If tag and value is not None and "", the return the tag and value as a html string. It includes the props, which is why we call the function
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"

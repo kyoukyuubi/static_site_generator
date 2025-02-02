@@ -8,17 +8,24 @@ def process_list_block(block, is_ordered):
         if is_ordered:
             return line[line.find(". ") + 2:]
         else:
-            return line.lstrip("- ").lstrip("* ")
+            if line.startswith("- "):
+                return line[2:]  # Skip exactly "- "
+            elif line.startswith("* "):
+                return line[2:]  # Skip exactly "* "
+            return line
         
     tag = "ol" if is_ordered else "ul"
     parent_node = ParentNode(tag, [])
 
     lines = block.split("\n")
     for line in lines:
+        if not line.strip():
+            continue
         line_no_prefix = strip_list_prefix(line)
-        children = text_to_children(line_no_prefix)
-        li_node = ParentNode("li", children)
-        parent_node.children.append(li_node)
+        if line_no_prefix.strip():
+            children = text_to_children(line_no_prefix)
+            li_node = ParentNode("li", children)
+            parent_node.children.append(li_node)
     return parent_node
 
 def text_to_children(text):

@@ -1,6 +1,7 @@
 import os
 import shutil
 from functions import extract_title, markdown_to_html_node
+from pathlib import Path
 
 def copy_recursive(source, destination):
     #Clean the destination if it already exists
@@ -29,7 +30,6 @@ def copy_recursive(source, destination):
 def generate_page(from_path, template_path, dest_path):
     #Print a msg to show what it is going to do
     #This is a non debug messege!
-    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     #Open the Markdown file
     with open(from_path) as file:
@@ -63,11 +63,31 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, 'w') as file:
         file.write(insert_content)
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    #Make a list of dirs
+    dir_list = os.listdir(dir_path_content)
+
+    #Loop through the dir and see if it has files, if it does, run through them with the generate_page function
+    for item in dir_list:
+        #Join the directory path with the item name to get the full path
+        full_path = os.path.join(dir_path_content, item)
+
+        #Get the relative path (removing content/ from the file path)
+        relative_path = Path(full_path).relative_to(dir_path_content)
+
+        if os.path.isfile(full_path) and full_path.endswith('.md'):
+            html_path = relative_path.with_suffix('.html')
+            dest_path = os.path.join(dest_dir_path, str(html_path))
+            generate_page(full_path, template_path, dest_path)
+        elif os.path.isdir(full_path):
+            new_dest = os.path.join(dest_dir_path, item)
+            generate_pages_recursive(full_path, template_path, new_dest)
+
 def main():
     try:
         if copy_recursive("static", "public"):
             print("Operation succeded!")
-        generate_page("content/index.md", "template.html", "public/index.html")
+        generate_pages_recursive("content", "template.html", "public")
     except Exception as e:
         print (f"Execption Caught: {e}")
 

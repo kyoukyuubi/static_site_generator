@@ -37,8 +37,6 @@ Maybe it will be a battle system, or it will be an interactive story that I will
 
 * Battle system is using Hp and etc, maybe skill points?
 * Interactive story, you get to descide how the scene plays, which position etc. It will use skills etc, to determine how long you last etc.
-    - Stamina, determins how long you last
-    - How "erect" you can be, changes dialog etc.
 
 ### Story
 

@@ -18,6 +18,12 @@ I'm going to use GoDot since it has a code that is close to Python, to get me us
 
 TBA
 
+### Ideas
+
+* This could be used for stories for VTubers
+* It can be used for short stories about OCs etc!
+* It can include multible stories with unlocks etc.
+
 ## NSFW
 
 Not Safe For Work games!

@@ -41,3 +41,9 @@ Maybe it will be a battle system, or it will be an interactive story that I will
 ### Story
 
 TBA
+
+## Ideas
+
+* I can use the images Yuku made during NNN as test images for when I do a personal test for it. Like a test scenario
+* Make the game support images. Don't make them require it
+* Research how the text based game should look

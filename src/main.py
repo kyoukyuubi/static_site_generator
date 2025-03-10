@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 from functions import extract_title, markdown_to_html_node
 from pathlib import Path
 
@@ -27,7 +28,7 @@ def copy_recursive(source, destination):
             copy_recursive(full_path, os.path.join(destination, item))
     return True
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     #Print a msg to show what it is going to do
     #This is a non debug messege!
 
@@ -52,6 +53,8 @@ def generate_page(from_path, template_path, dest_path):
     #Modify the template in a new var that has the title and the html_string
     insert_title = template_conents.replace("{{ Title }}", title)
     insert_content = insert_title.replace("{{ Content }}", html_string)
+    insert_content = insert_content.replace('href="/', f'href="{basepath}')
+    insert_content = insert_content.replace('src="/', f'src="{basepath}')
 
     #Store the path as a correct path name
     path = os.path.dirname(dest_path)
@@ -63,7 +66,7 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, 'w') as file:
         file.write(insert_content)
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     #Make a list of dirs
     dir_list = os.listdir(dir_path_content)
 
@@ -78,16 +81,18 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
         if os.path.isfile(full_path) and full_path.endswith('.md'):
             html_path = relative_path.with_suffix('.html')
             dest_path = os.path.join(dest_dir_path, str(html_path))
-            generate_page(full_path, template_path, dest_path)
+            generate_page(full_path, template_path, dest_path, basepath)
         elif os.path.isdir(full_path):
             new_dest = os.path.join(dest_dir_path, item)
-            generate_pages_recursive(full_path, template_path, new_dest)
+            generate_pages_recursive(full_path, template_path, new_dest, basepath)
 
 def main():
+    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
+
     try:
-        if copy_recursive("static", "public"):
+        if copy_recursive("static", "docs"):
             print("Operation succeded!")
-        generate_pages_recursive("content", "template.html", "public")
+        generate_pages_recursive("content", "template.html", "docs", basepath)
     except Exception as e:
         print (f"Execption Caught: {e}")
 
